@@ -23,6 +23,7 @@ public class JavaSerializer {
     }
 
     public void serialize(Object obj, OutputStream stream){
+
         serialize(obj,stream, DEFAULT_CHARSET);
     }
 
