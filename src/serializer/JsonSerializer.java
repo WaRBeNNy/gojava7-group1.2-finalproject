@@ -23,13 +23,13 @@ public class JsonSerializer {
     Map<Class, JsonMapper> mappersCache;
 
     public JsonSerializer() {
-        this.mappersCache.put(Boolean.class, new BooleanMapper());
-        this.mappersCache.put(Collection.class, new CollectionMapper());
-        this.mappersCache.put(Map.class, new MapMapper());
-        this.mappersCache.put(Number.class, new NumberMapper());
-        this.mappersCache.put(Object[].class, new ObjectArrayMapper());
-        this.mappersCache.put(Object[].class, new PrimitiveArrayMapper());
-        this.mappersCache.put(String.class, new StringMapper());
+//        this.mappersCache.put(Boolean.class, new BooleanMapper());
+//        this.mappersCache.put(Collection.class, new CollectionMapper());
+//        this.mappersCache.put(Map.class, new MapMapper());
+//        this.mappersCache.put(Number.class, new NumberMapper());
+//        this.mappersCache.put(Object[].class, new ObjectArrayMapper());
+//        this.mappersCache.put(Object[].class, new PrimitiveArrayMapper());
+//        this.mappersCache.put(String.class, new StringMapper());
     }
 
     public boolean isIndent(){
@@ -56,11 +56,15 @@ public class JsonSerializer {
     }
 
     public void serialize(Object obj, Writer writer){
-        //…
+        JsonWriter jsonWriter = new JsonWriter(writer);
+
+        serialize(obj, jsonWriter);
     }
 
     protected void serialize(Object object, JsonWriter writer) {
-        getMapper(String.class);
+        JsonMapper mapper = getMapper(object.getClass());
+        mapper.write(object, writer);
+        writer.flush();
     }
 
     protected JsonMapper getMapper(Class clazz) {
