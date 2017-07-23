@@ -5,6 +5,10 @@ import writer.JsonWriter;
 public class NumberMapper implements JsonMapper {
     @Override
     public void write(Object obj, JsonWriter writer) {
-        writer.writeNumber(Integer.parseInt(obj.toString()));
+        writer.writeString("\"" + obj.getClass().getSimpleName() + "\"");
+        writer.writePropertySeparator();
+        writer.writeString(" \"");
+        writer.writeNumber((Number) obj);
+        writer.writeString(" \"");
     }
 }
