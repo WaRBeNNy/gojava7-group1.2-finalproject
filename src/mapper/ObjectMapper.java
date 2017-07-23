@@ -3,6 +3,7 @@ package mapper;
 import java.io.Writer;
 import java.lang.reflect.Field;
 
+import serializer.JsonSerializer;
 import writer.JsonWriter;
 
 public class ObjectMapper implements JsonMapper {
@@ -10,33 +11,22 @@ public class ObjectMapper implements JsonMapper {
     @Override
     public void write(Object obj, JsonWriter writer) {
 	// TODO Auto-generated method stub
+    		writer.writeObjectBegin();
 	        writer.writeString("\"" + obj.getClass().getSimpleName() + "\"");
 	        writer.writePropertySeparator();
 	        writer.writeString(" \"");
 	        
 	        Field[] fields = obj.getClass().getFields();
-		for (int i = 0; i < fields.length; i++) {
-		    JsonMapper mapper = classDefiner(fields[i].getDeclaringClass());
-		    mapper.write(fields[i].getDeclaringClass(), writer);
-		}
+	        for (int i = 0; i < fields.length; i++) {
+	        	JsonSerializer jsonSer = new JsonSerializer();
+	        	try {
+					jsonSer.serialize(fields[i].get(fields[i].getDeclaringClass()));
+				} catch (IllegalStateException | IllegalArgumentException | IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        }
 	        writer.writeString(" \"");
-    	}
-    
-    public JsonMapper classDefiner(Object obj) {
-	switch (obj.getClass().getSimpleName()){
-    		case ("Byte"):
-    		case ("Short"):
-    		case ("Integer"):
-    		case ("Long"):
-    		case ("Float"):
-    		case ("Double"):
-    		    return new NumberMapper();
-    		case ("String"):
-    		    return new StringMapper();
-    		case ("Boolean"):
-    		    return new BooleanMapper();
-    		default :
-    		    return new ObjectMapper();
-		}
+	        writer.writeObjectEnd();
     	}
 }
