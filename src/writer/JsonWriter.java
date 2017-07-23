@@ -53,7 +53,27 @@ public class JsonWriter {
 
     public void writeNumber(Number n) {
         try {
-            writer.write(n.intValue());
+            switch (n.getClass().getSimpleName()){
+        	case ("Integer"):
+        	    writer.write(n.intValue());
+        		break;
+        	case ("Short"):
+        	    writer.write(n.shortValue());
+        		break;
+        	case ("Byte"):
+        	    writer.write(n.byteValue());
+        		break;
+        	case ("Long"):
+        	    writer.write(n.toString());
+        		break;
+        	case ("Float"):
+        	    writer.write(n.toString());
+        		break;
+        	case ("Double"):
+        	    writer.write(n.toString());
+        		break;
+        	}
+            
         } catch (IOException e) {
             e.printStackTrace();
         }// – записывает в низ лежащий поток число
@@ -75,9 +95,12 @@ public class JsonWriter {
         }//– добавляет двоеточие «:»
     }
 
-    public void writeBoolean() {
+    public void writeBoolean(Boolean bool) {
         try {
-            writer.write("true");
+            if (bool)
+        	writer.write("true");
+            else
+        	writer.write("false");
         } catch (IOException e) {
             e.printStackTrace();
         }
