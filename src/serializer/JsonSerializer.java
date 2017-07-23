@@ -10,6 +10,7 @@ import java.io.Writer;
 import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 public class JsonSerializer {
@@ -19,6 +20,7 @@ public class JsonSerializer {
     Map<Class, JsonMapper> mappersCache;
 
     public JsonSerializer() {
+        this.mappersCache = new HashMap<>();
         this.mappersCache.put(Boolean.class, new BooleanMapper());
         this.mappersCache.put(Collection.class, new CollectionMapper());
         this.mappersCache.put(Map.class, new MapMapper());
