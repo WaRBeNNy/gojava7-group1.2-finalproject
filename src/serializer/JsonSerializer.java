@@ -3,47 +3,46 @@ package serializer;
 import mapper.*;
 import writer.JsonWriter;
 
-import java.io.File;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Map;
 
 public class JsonSerializer {
     public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
-
-    private String PropSeparator = System.getProperty("file.separator");
-    private String PropUser = System.getProperty("user.dir");
-    private String Path = PropUser + PropSeparator + "resources" + PropSeparator + "JsonFormat.data";      //Для того, что бы запускалось на люброй ОС
-
-    private File file = new File(Path); //Priavate
+    public boolean indent;
 
     Map<Class, JsonMapper> mappersCache;
 
     public JsonSerializer() {
-//        this.mappersCache.put(Boolean.class, new BooleanMapper());
-//        this.mappersCache.put(Collection.class, new CollectionMapper());
-//        this.mappersCache.put(Map.class, new MapMapper());
-//        this.mappersCache.put(Number.class, new NumberMapper());
-//        this.mappersCache.put(Object[].class, new ObjectArrayMapper());
-//        this.mappersCache.put(Object[].class, new PrimitiveArrayMapper());
-//        this.mappersCache.put(String.class, new StringMapper());
+        this.mappersCache.put(Boolean.class, new BooleanMapper());
+        this.mappersCache.put(Collection.class, new CollectionMapper());
+        this.mappersCache.put(Map.class, new MapMapper());
+        this.mappersCache.put(Number.class, new NumberMapper());
+        this.mappersCache.put(Object[].class, new ObjectArrayMapper());
+        this.mappersCache.put(Array.class, new PrimitiveArrayMapper());
+        this.mappersCache.put(String.class, new StringMapper());
+        this.mappersCache.put(Object.class, new ObjectMapper());
     }
 
     public boolean isIndent(){
-        //…
-        return false;
+        return indent;
     }
 
     public void setIndent(boolean indent){
-        //…
+        this.indent = indent;
     }
 
     public String serialize(Object obj) throws IllegalStateException {
-        //…
-        return " ";
+        Writer stringWriter = new StringWriter();
+        JsonWriter jsonWriter = new JsonWriter(stringWriter);
+        serialize(obj, jsonWriter);
+
+        return stringWriter.toString();
     }
 
     public void serialize(Object obj, OutputStream stream){
@@ -68,6 +67,21 @@ public class JsonSerializer {
     }
 
     protected JsonMapper getMapper(Class clazz) {
-        return new StringMapper();
+        if(clazz.equals(Boolean.class)) {
+            return mappersCache.get(Boolean.class);
+        } else if (clazz.equals(Collection.class)) {
+            return mappersCache.get(Collection.class);
+        } else if (clazz.equals(Map.class)) {
+            return mappersCache.get(Map.class);
+        } else if (clazz.equals(Number.class)) {
+            return mappersCache.get(Number.class);
+        } else if (clazz.equals(Object[].class)) {
+            return new ObjectArrayMapper();
+        } else if (clazz.equals(Number[].class) || clazz.equals(char[].class) || clazz.equals(boolean[].class)) {
+            return mappersCache.get(Array.class);
+        } else if (clazz.equals(String.class)) {
+            return mappersCache.get(String.class);
+        }
+        return mappersCache.get(Object.class);
     }
 }
