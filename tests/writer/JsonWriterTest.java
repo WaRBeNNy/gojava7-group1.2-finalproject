@@ -51,7 +51,7 @@ class JsonWriterTest {
 
     @Test
     void writeBoolean() {
-        writer.writeBoolean();
+        writer.writeBoolean(true);
     }
 
     @Test
