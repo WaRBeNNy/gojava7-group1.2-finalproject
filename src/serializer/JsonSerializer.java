@@ -14,12 +14,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JsonSerializer {
+    private static JsonSerializer instance = new JsonSerializer();
     public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
-    public boolean indent;
+    private boolean indent;
+    public Writer writer;
 
     Map<Class, JsonMapper> mappersCache;
 
-    public JsonSerializer() {
+    private JsonSerializer() {
         this.mappersCache = new HashMap<>();
         this.mappersCache.put(Boolean.class, new BooleanMapper());
         this.mappersCache.put(Collection.class, new CollectionMapper());
@@ -29,6 +31,10 @@ public class JsonSerializer {
         this.mappersCache.put(Array.class, new PrimitiveArrayMapper());
         this.mappersCache.put(String.class, new StringMapper());
         this.mappersCache.put(Object.class, new ObjectMapper());
+    }
+
+    public static JsonSerializer getInstance() {
+        return instance;
     }
 
     public boolean isIndent(){
@@ -58,6 +64,7 @@ public class JsonSerializer {
 
     public void serialize(Object obj, Writer writer){
         JsonWriter jsonWriter = new JsonWriter(writer);
+        this.writer = writer;
 
         serialize(obj, jsonWriter);
     }
@@ -75,7 +82,8 @@ public class JsonSerializer {
             return mappersCache.get(Collection.class);
         } else if (clazz.equals(Map.class)) {
             return mappersCache.get(Map.class);
-        } else if (clazz.equals(Number.class)) {
+        } else if (clazz.equals(Integer.class) || clazz.equals(Double.class) || clazz.equals(Float.class)
+                || clazz.equals(Short.class) || clazz.equals(Long.class) || clazz.equals(Byte.class)) {
             return mappersCache.get(Number.class);
         } else if (clazz.equals(Object[].class)) {
             return new ObjectArrayMapper();

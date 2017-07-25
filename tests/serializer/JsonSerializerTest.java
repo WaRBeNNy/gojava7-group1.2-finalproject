@@ -9,7 +9,7 @@ import java.nio.charset.Charset;
 import static org.junit.jupiter.api.Assertions.*;
 
 class JsonSerializerTest {
-    JsonSerializer serializer = new JsonSerializer();
+    JsonSerializer serializer = JsonSerializer.getInstance();
 
     @Test
     void isIndent() {

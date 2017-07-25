@@ -45,7 +45,7 @@ public class JsonWriter {
 
     public void writeString(String string) {
         try {
-            writer.write(string);
+            writer.write("\"" + string + "\"");
         } catch (IOException e) {
             e.printStackTrace();
         }//– данный метод принимает стрингу, при необходимости ескейпит внутри символы, добавляет с обеих сторон «“»
