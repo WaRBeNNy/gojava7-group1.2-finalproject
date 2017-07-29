@@ -1,6 +1,6 @@
 package mapper;
 
-import java.io.Writer;
+import java.io.StringWriter;
 import java.lang.reflect.Field;
 
 import serializer.JsonSerializer;
@@ -8,17 +8,21 @@ import writer.JsonWriter;
 
 public class ObjectMapper implements JsonMapper {
 
-    @Override
+
+	@Override
     public void write(Object obj, JsonWriter writer) {
 	// TODO Auto-generated method stub
+		JsonSerializer jsonSerializer = JsonSerializer.getInstance();
     		writer.writeObjectBegin();
     		Field[] fields = obj.getClass().getFields();
-	        for (int i = 0; i < fields.length; i++) {
-	        	JsonSerializer jsonSer = new JsonSerializer();
+    		Field.setAccessible(fields, true);
+	        for (Field field : fields) {
 	        	try {
-	        		writer.writeString(fields[i].getName());
+	        		writer.writeString(field.getName());
 	        		writer.writePropertySeparator();
-					jsonSer.serialize(fields[i].get(fields[i].getDeclaringClass()));
+	        		Object value = field.get(obj);
+	        		jsonSerializer.serialize(value, writer.getWriter());
+	        		writer.writeString(",");
 				} catch (IllegalStateException | IllegalArgumentException | IllegalAccessException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

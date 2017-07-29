@@ -10,6 +10,10 @@ public class JsonWriter {
         this.writer = writer;
     }
 
+    public Writer getWriter() {
+        return writer;
+    }
+
     public void writeObjectBegin(){
         try {
             writer.append('{');

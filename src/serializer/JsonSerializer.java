@@ -1,6 +1,7 @@
 package serializer;
 
 import mapper.*;
+import writer.IndentedJsonWriter;
 import writer.JsonWriter;
 
 import java.io.OutputStream;
@@ -14,15 +15,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JsonSerializer {
-    private static JsonSerializer instance = new JsonSerializer();
+    private static volatile JsonSerializer instance = new JsonSerializer();
     public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
     private boolean indent;
-    public Writer writer;
 
-    Map<Class, JsonMapper> mappersCache;
+    Map<Class, JsonMapper> mappersCache = new HashMap<>();
 
     private JsonSerializer() {
-        this.mappersCache = new HashMap<>();
         this.mappersCache.put(Boolean.class, new BooleanMapper());
         this.mappersCache.put(Collection.class, new CollectionMapper());
         this.mappersCache.put(Map.class, new MapMapper());
@@ -63,8 +62,13 @@ public class JsonSerializer {
     }
 
     public void serialize(Object obj, Writer writer){
-        JsonWriter jsonWriter = new JsonWriter(writer);
-        this.writer = writer;
+        JsonWriter jsonWriter;
+        if(isIndent()) {
+            jsonWriter = new IndentedJsonWriter(writer);
+        } else {
+            jsonWriter = new JsonWriter(writer);
+        }
+
 
         serialize(obj, jsonWriter);
     }
@@ -76,22 +80,13 @@ public class JsonSerializer {
     }
 
     protected JsonMapper getMapper(Class clazz) {
-        if(clazz.equals(Boolean.class)) {
-            return mappersCache.get(Boolean.class);
-        } else if (clazz.equals(Collection.class)) {
-            return mappersCache.get(Collection.class);
-        } else if (clazz.equals(Map.class)) {
-            return mappersCache.get(Map.class);
-        } else if (clazz.equals(Integer.class) || clazz.equals(Double.class) || clazz.equals(Float.class)
+        if (clazz.equals(Integer.class) || clazz.equals(Double.class) || clazz.equals(Float.class)
                 || clazz.equals(Short.class) || clazz.equals(Long.class) || clazz.equals(Byte.class)) {
             return mappersCache.get(Number.class);
-        } else if (clazz.equals(Object[].class)) {
-            return new ObjectArrayMapper();
-        } else if (clazz.equals(Number[].class) || clazz.equals(char[].class) || clazz.equals(boolean[].class)) {
-            return mappersCache.get(Array.class);
-        } else if (clazz.equals(String.class)) {
-            return mappersCache.get(String.class);
+        } else if (mappersCache.containsKey(clazz)) {
+            return mappersCache.get(clazz);
         }
+
         return mappersCache.get(Object.class);
     }
 }

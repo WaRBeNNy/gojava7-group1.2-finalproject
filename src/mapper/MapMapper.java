@@ -11,7 +11,7 @@ public class MapMapper implements JsonMapper{
     	writer.writeObjectBegin();
     	Map<Object, Object> map = (Map<Object, Object>) obj;
     	for (Map.Entry<Object, Object> pair : map.entrySet()) {
-    		JsonSerializer jsonSer = new JsonSerializer();
+    		JsonSerializer jsonSer = JsonSerializer.getInstance();
     		Object key = pair.getKey();
     		jsonSer.serialize(key);
     		Object value = pair.getValue();

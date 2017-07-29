@@ -11,7 +11,7 @@ public class CollectionMapper implements JsonMapper {
     	writer.writeArrayBegin();
     	Collection collection = (Collection) obj;
     	for(Object element : collection) {
-    		JsonSerializer jsonSer = new JsonSerializer();
+    		JsonSerializer jsonSer = JsonSerializer.getInstance();
     		jsonSer.serialize(element);
     	}
     	writer.writeArrayEnd();
