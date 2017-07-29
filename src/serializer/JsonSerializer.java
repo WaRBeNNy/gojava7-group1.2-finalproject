@@ -4,15 +4,13 @@ import mapper.*;
 import writer.IndentedJsonWriter;
 import writer.JsonWriter;
 
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class JsonSerializer {
     private static volatile JsonSerializer instance = new JsonSerializer();
@@ -45,11 +43,10 @@ public class JsonSerializer {
     }
 
     public String serialize(Object obj) throws IllegalStateException {
-        Writer stringWriter = new StringWriter();
-        JsonWriter jsonWriter = new JsonWriter(stringWriter);
-        serialize(obj, jsonWriter);
+        OutputStream stream = new ByteArrayOutputStream();
+        serialize(obj, stream);
 
-        return stringWriter.toString();
+        return stream.toString();
     }
 
     public void serialize(Object obj, OutputStream stream){

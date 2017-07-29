@@ -22,7 +22,7 @@ public class ObjectMapper implements JsonMapper {
 	        		writer.writePropertySeparator();
 	        		Object value = field.get(obj);
 	        		jsonSerializer.serialize(value, writer.getWriter());
-	        		writer.writeString(",");
+	        		writer.writeSeparator();
 				} catch (IllegalStateException | IllegalArgumentException | IllegalAccessException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

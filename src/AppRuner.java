@@ -13,7 +13,7 @@ public class AppRuner {
         String test = "Some string";
         int n = 1000;
         Double d = 250.47;
-        Developer developer = new Developer("Ivan", 25);
+        Developer developer = new Developer("Ivan", 63, 500.00);
 
         result = jsonSerializer.serialize(test);
         System.out.println(result);

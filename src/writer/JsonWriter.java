@@ -59,13 +59,13 @@ public class JsonWriter {
         try {
             switch (n.getClass().getSimpleName()){
         	case ("Integer"):
-        	    writer.write(n.intValue());
+        	    writer.write(n.toString());
         		break;
         	case ("Short"):
-        	    writer.write(n.shortValue());
+        	    writer.write(n.toString());
         		break;
         	case ("Byte"):
-        	    writer.write(n.byteValue());
+        	    writer.write(n.toString());
         		break;
         	case ("Long"):
         	    writer.write(n.toString());
