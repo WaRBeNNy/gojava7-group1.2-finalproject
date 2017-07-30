@@ -6,6 +6,17 @@ import java.io.Writer;
 public class JsonWriter {
    Writer writer;
 
+    protected static final char OBJ_BEGIN = '{';                              //
+    protected static final char OBJ_END = '}';                                //
+    protected static final char ARR_BEGIN = '[';                              //
+    protected static final char ARR_END = ']';                                //
+    protected static final char SEPARATOR = ',';                              // для простоты действий)
+    protected static final char PROP_SEPARATOR = ':';                         //
+    protected static final char STR_SEPARATOR = '\"';                         //
+    protected static final String NULL = "null";                              //
+
+    protected boolean separatorLast;
+
     public JsonWriter(Writer writer) {
         this.writer = writer;
     }
