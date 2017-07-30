@@ -8,14 +8,16 @@ import writer.JsonWriter;
 public class MapMapper implements JsonMapper{
     @Override
     public void write(Object obj, JsonWriter writer) {
+		JsonSerializer jsonSer = JsonSerializer.getInstance();
     	writer.writeObjectBegin();
     	Map<Object, Object> map = (Map<Object, Object>) obj;
     	for (Map.Entry<Object, Object> pair : map.entrySet()) {
-    		JsonSerializer jsonSer = JsonSerializer.getInstance();
     		Object key = pair.getKey();
-    		jsonSer.serialize(key);
+    		writer.writeString(key.toString());
+    		writer.writeSeparator();
     		Object value = pair.getValue();
-    		jsonSer.serialize(value);
+    		jsonSer.serialize(value, writer.getWriter());
+
     	}
     	writer.writeObjectEnd();
     }

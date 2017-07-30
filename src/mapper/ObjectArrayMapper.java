@@ -3,14 +3,16 @@ package mapper;
 import serializer.JsonSerializer;
 import writer.JsonWriter;
 
+import java.lang.reflect.Array;
+
 public class ObjectArrayMapper implements JsonMapper {
     @Override
     public void write(Object obj, JsonWriter writer) {
+		JsonSerializer jsonSer = JsonSerializer.getInstance();
     	writer.writeArrayBegin();
-    	Object[] arrayObject = (Object[]) obj;
-    	for(int i = 0; i < arrayObject.length; i++){
-    		JsonSerializer jsonSer = new JsonSerializer();
-    		jsonSer.serialize(arrayObject[i]);
+    	for(int i = 0; i < Array.getLength(obj); i++){
+    		jsonSer.serialize(Array.get(obj, i), writer.getWriter());
+    		writer.writeSeparator();
     	}
     	writer.writeArrayEnd();
     }

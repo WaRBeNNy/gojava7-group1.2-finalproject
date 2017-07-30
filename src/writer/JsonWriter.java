@@ -16,7 +16,7 @@ public class JsonWriter {
 
     public void writeObjectBegin(){
         try {
-            writer.append('{');
+            writer.write('{');
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -24,7 +24,10 @@ public class JsonWriter {
 
     public void writeObjectEnd(){
         try {
-            writer.append('}');
+            //if(writer.toString().endsWith(",")) {
+                writer.write("\b");
+            //}
+            writer.write('}');
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -33,7 +36,7 @@ public class JsonWriter {
 
     public void writeArrayBegin() {
         try {
-            writer.append('[');
+            writer.write('[');
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,7 +44,10 @@ public class JsonWriter {
 
     public void writeArrayEnd() {
         try {
-            writer.append(']');
+            //if(writer.toString().endsWith(",")) {
+                writer.write("\b");
+            //}
+            writer.write(']');
         } catch (IOException e) {
             e.printStackTrace();
         }//– если предыдущий символ – запятая, удаляет его
@@ -85,7 +91,7 @@ public class JsonWriter {
 
     public void writeSeparator() {
         try {
-            writer.append(',');
+            writer.write(",");
         } catch (IOException e) {
             e.printStackTrace();
         }// – добавляет запятую
@@ -93,7 +99,7 @@ public class JsonWriter {
 
     public void writePropertySeparator() {
         try {
-            writer.append(':');
+            writer.write(':');
         } catch (IOException e) {
             e.printStackTrace();
         }//– добавляет двоеточие «:»

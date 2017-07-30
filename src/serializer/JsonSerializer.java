@@ -3,14 +3,13 @@ package serializer;
 import mapper.*;
 import writer.IndentedJsonWriter;
 import writer.JsonWriter;
-
 import java.io.*;
 import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 public class JsonSerializer {
     private static volatile JsonSerializer instance = new JsonSerializer();
@@ -71,8 +70,12 @@ public class JsonSerializer {
     }
 
     protected void serialize(Object object, JsonWriter writer) {
-        JsonMapper mapper = getMapper(object.getClass());
-        mapper.write(object, writer);
+        if(object == null) {
+            writer.writeNull();
+        } else {
+            JsonMapper mapper = getMapper(object.getClass());
+            mapper.write(object, writer);
+        }
         writer.flush();
     }
 
@@ -82,6 +85,14 @@ public class JsonSerializer {
             return mappersCache.get(Number.class);
         } else if (mappersCache.containsKey(clazz)) {
             return mappersCache.get(clazz);
+        } else if (clazz.isArray() && clazz.isPrimitive()) {
+            return mappersCache.get(Array.class);
+        } else if (clazz.isArray()) {
+            return mappersCache.get(Object[].class);
+        } else if (Collection.class.isAssignableFrom(clazz)) {
+            return mappersCache.get(Collection.class);
+        } else if (Map.class.isAssignableFrom(clazz)) {
+            return mappersCache.get(Map.class);
         }
 
         return mappersCache.get(Object.class);
