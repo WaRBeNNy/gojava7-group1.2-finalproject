@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 public class JsonWriter {
-   Writer writer;
 
     protected static final char OBJ_BEGIN = '{';                              //
     protected static final char OBJ_END = '}';                                //
@@ -14,6 +13,8 @@ public class JsonWriter {
     protected static final char PROP_SEPARATOR = ':';                         //
     protected static final char STR_SEPARATOR = '\"';                         //
     protected static final String NULL = "null";                              //
+
+    protected Writer writer;
 
     protected boolean separatorLast;
 
@@ -25,20 +26,20 @@ public class JsonWriter {
         return writer;
     }
 
-    public void writeObjectBegin(){
+    public void writeObjectBegin() {
         try {
-            writer.write('{');
+            writer.write(OBJ_BEGIN);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void writeObjectEnd(){
+    public void writeObjectEnd() {
         try {
             //if(writer.toString().endsWith(",")) {
-                writer.write("\b");
+            writer.write("\b");
             //}
-            writer.write('}');
+            writer.write(OBJ_END);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,7 +48,7 @@ public class JsonWriter {
 
     public void writeArrayBegin() {
         try {
-            writer.write('[');
+            writer.write(ARR_BEGIN);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,45 +57,25 @@ public class JsonWriter {
     public void writeArrayEnd() {
         try {
             //if(writer.toString().endsWith(",")) {
-                writer.write("\b");
+            writer.write("\b");
             //}
-            writer.write(']');
+            writer.write(ARR_END);
         } catch (IOException e) {
             e.printStackTrace();
         }//– если предыдущий символ – запятая, удаляет его
     }
 
-    public void writeString(String string) {
+    public void writeString(String StringValue) {
         try {
-            writer.write("\"" + string + "\"");
+            writer.append(STR_SEPARATOR).append(StringValue).append(STR_SEPARATOR);
         } catch (IOException e) {
             e.printStackTrace();
         }//– данный метод принимает стрингу, при необходимости ескейпит внутри символы, добавляет с обеих сторон «“»
     }
 
-    public void writeNumber(Number n) {
+    public void writeNumber(Number number) {
         try {
-            switch (n.getClass().getSimpleName()){
-        	case ("Integer"):
-        	    writer.write(n.toString());
-        		break;
-        	case ("Short"):
-        	    writer.write(n.toString());
-        		break;
-        	case ("Byte"):
-        	    writer.write(n.toString());
-        		break;
-        	case ("Long"):
-        	    writer.write(n.toString());
-        		break;
-        	case ("Float"):
-        	    writer.write(n.toString());
-        		break;
-        	case ("Double"):
-        	    writer.write(n.toString());
-        		break;
-        	}
-            
+            writer.write(number.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }// – записывает в низ лежащий поток число
@@ -102,7 +83,7 @@ public class JsonWriter {
 
     public void writeSeparator() {
         try {
-            writer.write(",");
+            writer.write(SEPARATOR);
         } catch (IOException e) {
             e.printStackTrace();
         }// – добавляет запятую
@@ -110,18 +91,15 @@ public class JsonWriter {
 
     public void writePropertySeparator() {
         try {
-            writer.write(':');
+            writer.write(PROP_SEPARATOR);
         } catch (IOException e) {
             e.printStackTrace();
         }//– добавляет двоеточие «:»
     }
 
-    public void writeBoolean(Boolean bool) {
+    public void writeBoolean(Boolean BooleanValue) {
         try {
-            if (bool)
-        	writer.write("true");
-            else
-        	writer.write("false");
+            writer.write(BooleanValue.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -129,11 +107,12 @@ public class JsonWriter {
 
     public void writeNull() {
         try {
-            writer.write("null");
+            writer.write(NULL);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     public void flush() {
         try {
             writer.flush();

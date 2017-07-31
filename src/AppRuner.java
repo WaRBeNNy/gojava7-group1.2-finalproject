@@ -16,7 +16,8 @@ public class AppRuner {
         Boolean tr = true;
         Boolean fal = false;
         Developer dev = null;
-        int[] num ={1, 2, 3, 4, 5};
+        int[] IntNum = {1, 2, 3, 4, 5};
+        double[] DoubleNum = {123.3213,647.321,5221.324221};
         Developer developer = new Developer("Ivan", 63, 500.00);
         Developer developer2 = new Developer("Petya", 27, 1000.00);
         Developer[] devs = {developer, developer2};
@@ -31,12 +32,15 @@ public class AppRuner {
         System.out.println(result);
 
         result = jsonSerializer.serialize(fal);
-        System.out.println(fal);
+        System.out.println(result);
 
         result = jsonSerializer.serialize(dev);
         System.out.println(result);
 
-        result = jsonSerializer.serialize(num);
+        result = jsonSerializer.serialize(IntNum);
+        System.out.println(result);
+
+        result = jsonSerializer.serialize(DoubleNum);
         System.out.println(result);
 
         result = jsonSerializer.serialize(developer);

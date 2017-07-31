@@ -13,11 +13,7 @@ public class IndentedJsonWriter extends JsonWriter {
     private int indentSize = 2;
     private int currentLevel = 0;
 
-//    public IndentedJsonWriter(Writer writer) {
-//        super(writer);
-//    }
-
-private Map<Integer, String> newLineIndentMap;
+    private Map<Integer, String> newLineIndentMap;
 
     public IndentedJsonWriter(Writer writer) {
         super(writer);
