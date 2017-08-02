@@ -13,7 +13,7 @@ public class JsonWriter {
     protected static final char PROP_SEPARATOR = ':';                         //
     protected static final char STR_SEPARATOR = '\"';                         //
     protected static final String NULL = "null";                              //
-
+    protected static final char SPACE = ' ';
     protected Writer writer;
 
     protected boolean separatorLast;
@@ -67,6 +67,9 @@ public class JsonWriter {
 
     public void writeString(String StringValue) {
         try {
+            for (int i = 0; i < 3; i++) {
+                writer.append(SPACE);
+            }
             writer.append(STR_SEPARATOR).append(StringValue).append(STR_SEPARATOR);
         } catch (IOException e) {
             e.printStackTrace();

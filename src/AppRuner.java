@@ -15,9 +15,12 @@ public class AppRuner {
 
         Developer developer = new Developer("Ivan", 25, 1000.00, 500.00, true, true);
         Developer developer2 = new Developer("Petya", 27, 1000.00, 200.00, true, false);
+        Developer developer3 = new Developer("?", 27, 1020.00, 200.00, false, true);
+
         List devlist = new ArrayList();
         devlist.add(developer);
         devlist.add(developer2);
+        devlist.add(developer3);
 
         jsonSerializer.setIndent(true);
 

@@ -8,16 +8,15 @@ import java.util.Map;
 public class IndentedJsonWriter extends JsonWriter {
     private static final String NEW_LINE = "\n";
     private static final String INDENT_SEPARATOR = " ";
-    private static final char SPACE = ' ';
 
-    private int indentSize = 2;
+    private int indentSize = 4;
     private int currentLevel = 0;
 
     private Map<Integer, String> newLineIndentMap;
 
     public IndentedJsonWriter(Writer writer) {
         super(writer);
-        newLineIndentMap = new HashMap<Integer, String>();
+        newLineIndentMap = new HashMap<>();
     }
 
     public IndentedJsonWriter(Writer writer, int indentSize) {
@@ -48,7 +47,6 @@ public class IndentedJsonWriter extends JsonWriter {
     public void writeObjectEnd() {
         try {
             currentLevel--;
-            writer.write(NEW_LINE);
             writer.write(getNewLineIndentString());
             writer.write(OBJ_END);
         } catch (IOException e) {
@@ -61,6 +59,7 @@ public class IndentedJsonWriter extends JsonWriter {
         try {
             currentLevel++;
             writer.append(ARR_BEGIN).write(NEW_LINE);
+            writer.write(NEW_LINE);
             writer.write(getNewLineIndentString());
         } catch (IOException e) {
             e.printStackTrace();
@@ -93,8 +92,8 @@ public class IndentedJsonWriter extends JsonWriter {
     @Override
     public void writeSeparator() {
         try {
-            writer.append(SEPARATOR).write(NEW_LINE);
-            writer.write(getNewLineIndentString());
+                writer.append(SEPARATOR).write(NEW_LINE);
+                writer.write(getNewLineIndentString());
         } catch (IOException e) {
             e.printStackTrace();
         }
