@@ -37,7 +37,7 @@ public class JsonWriter {
     public void writeObjectEnd() {
         try {
             //if(writer.toString().endsWith(",")) {
-            writer.write("\b");
+            //writer.write("\b");
             //}
             writer.write(OBJ_END);
         } catch (IOException e) {
@@ -57,7 +57,7 @@ public class JsonWriter {
     public void writeArrayEnd() {
         try {
             //if(writer.toString().endsWith(",")) {
-            writer.write("\b");
+            //writer.write("\b");
             //}
             writer.write(ARR_END);
         } catch (IOException e) {
@@ -67,9 +67,9 @@ public class JsonWriter {
 
     public void writeString(String StringValue) {
         try {
-            for (int i = 0; i < 3; i++) {
-                writer.append(SPACE);
-            }
+            //for (int i = 0; i < 3; i++) {
+            //    writer.append(SPACE);
+            //}
             writer.append(STR_SEPARATOR).append(StringValue).append(STR_SEPARATOR);
         } catch (IOException e) {
             e.printStackTrace();

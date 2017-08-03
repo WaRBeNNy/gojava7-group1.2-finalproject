@@ -12,7 +12,9 @@ public class ObjectArrayMapper implements JsonMapper {
     	writer.writeArrayBegin();
     	for(int i = 0; i < Array.getLength(obj); i++){
     		jsonSer.serialize(Array.get(obj, i), writer.getWriter());
-    		writer.writeSeparator();
+    		if(i != Array.getLength(obj) - 1) {
+				writer.writeSeparator();
+			}
     	}
     	writer.writeArrayEnd();
     }

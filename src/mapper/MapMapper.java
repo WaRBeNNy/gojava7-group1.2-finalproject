@@ -1,5 +1,6 @@
 package mapper;
 
+import java.util.Iterator;
 import java.util.Map;
 
 import serializer.JsonSerializer;
@@ -11,13 +12,17 @@ public class MapMapper implements JsonMapper{
 		JsonSerializer jsonSer = JsonSerializer.getInstance();
     	writer.writeObjectBegin();
     	Map<Object, Object> map = (Map<Object, Object>) obj;
-    	for (Map.Entry<Object, Object> pair : map.entrySet()) {
-    		Object key = pair.getKey();
+    	Iterator iterator = map.entrySet().iterator();
+    	while(iterator.hasNext()) {
+    		Map.Entry entry = (Map.Entry) iterator.next();
+    		Object key = entry.getKey();
     		writer.writeString(key.toString());
-    		writer.writeSeparator();
-    		Object value = pair.getValue();
+    		writer.writePropertySeparator();
+    		Object value = entry.getValue();
     		jsonSer.serialize(value, writer.getWriter());
-
+    		if(iterator.hasNext()) {
+				writer.writeSeparator();
+			}
     	}
     	writer.writeObjectEnd();
     }

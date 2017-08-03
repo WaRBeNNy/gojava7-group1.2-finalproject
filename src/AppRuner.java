@@ -3,10 +3,7 @@ import serializer.JsonSerializer;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AppRuner {
     public static void main(String[] args) throws IOException {
@@ -17,12 +14,13 @@ public class AppRuner {
         Developer developer2 = new Developer("Petya", 27, 1000.00, 200.00, true, false);
         Developer developer3 = new Developer("?", 27, 1020.00, 200.00, false, true);
 
-        List devlist = new ArrayList();
-        devlist.add(developer);
-        devlist.add(developer2);
-        devlist.add(developer3);
+        Map<String, Developer> devlist = new TreeMap<>();
 
-        jsonSerializer.setIndent(true);
+        devlist.put("Teamlead", developer);
+        devlist.put("Slave1", developer2);
+        devlist.put("Slave2", developer3);
+
+        jsonSerializer.setIndent(true, 4);
 
         result = jsonSerializer.serialize(devlist);
         System.out.println(result);

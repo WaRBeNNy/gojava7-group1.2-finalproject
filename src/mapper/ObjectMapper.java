@@ -20,28 +20,32 @@ public class ObjectMapper implements JsonMapper {
 		writer.writeObjectBegin();
 		Field[] fields = obj.getClass().getDeclaredFields();
 		Field.setAccessible(fields, true);
-		for (Field field : fields) {
+		for (int i = 0; i < fields.length; i++) {
 			try {
-				int mods = field.getModifiers();
-				Object value = field.get(obj);
-				if (field.isAnnotationPresent(JsonProperty.class)) {
-					if(!field.getAnnotation(JsonProperty.class).name().isEmpty()) {
-						writer.writeString(field.getAnnotation(JsonProperty.class).name());
+				int mods = fields[i].getModifiers();
+				Object value = fields[i].get(obj);
+				if (fields[i].isAnnotationPresent(JsonProperty.class)) {
+					if(!fields[i].getAnnotation(JsonProperty.class).name().isEmpty()) {
+						writer.writeString(fields[i].getAnnotation(JsonProperty.class).name());
 					} else {
-						writer.writeString(field.getName());
+						writer.writeString(fields[i].getName());
 					}
 					writer.writePropertySeparator();
 					jsonSerializer.serialize(value, writer.getWriter());
-					writer.writeSeparator();
-				} else if (field.isAnnotationPresent(JsonIgnore.class)) {
+					if( i != fields.length - 1) {
+						writer.writeSeparator();
+					}
+				} else if (fields[i].isAnnotationPresent(JsonIgnore.class)) {
 					continue;
 				} else if (Modifier.isPrivate(mods) || Modifier.isTransient(mods)) {
 					continue;
 				} else {
-					writer.writeString(field.getName());
+					writer.writeString(fields[i].getName());
 					writer.writePropertySeparator();
 					jsonSerializer.serialize(value, writer.getWriter());
-					writer.writeSeparator();
+					if(i != fields.length - 1){
+						writer.writeSeparator();
+					}
 				}
 			} catch (IllegalStateException | IllegalArgumentException | IllegalAccessException e) {
 				// TODO Auto-generated catch block

@@ -14,6 +14,8 @@ public class JsonSerializer {
     private static volatile JsonSerializer instance = new JsonSerializer();
     public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
     private boolean indent;
+    private int ind;
+    private int level;
 
     Map<Class, JsonMapper> mappersCache = new HashMap<>();
 
@@ -36,8 +38,9 @@ public class JsonSerializer {
         return indent;
     }
 
-    public void setIndent(boolean indent){
+    public void setIndent(boolean indent, int ind){
         this.indent = indent;
+        this.ind = ind;
     }
 
     public String serialize(Object obj) throws IllegalStateException {
@@ -59,11 +62,11 @@ public class JsonSerializer {
     public void serialize(Object obj, Writer writer){
         JsonWriter jsonWriter;
         if(isIndent()) {
-            jsonWriter = new IndentedJsonWriter(writer);
+            jsonWriter = new IndentedJsonWriter(writer, ind, level);
+            this.level++;
         } else {
             jsonWriter = new JsonWriter(writer);
         }
-
 
         serialize(obj, jsonWriter);
     }
@@ -76,6 +79,7 @@ public class JsonSerializer {
             mapper.write(object, writer);
         }
         writer.flush();
+        this.level--;
     }
 
     protected JsonMapper getMapper(Class clazz) {

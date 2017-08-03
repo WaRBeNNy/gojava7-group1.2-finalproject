@@ -10,7 +10,7 @@ public class IndentedJsonWriter extends JsonWriter {
     private static final String INDENT_SEPARATOR = " ";
 
     private int indentSize = 4;
-    private int currentLevel = 0;
+    private int currentLevel;
 
     private Map<Integer, String> newLineIndentMap;
 
@@ -19,9 +19,10 @@ public class IndentedJsonWriter extends JsonWriter {
         newLineIndentMap = new HashMap<>();
     }
 
-    public IndentedJsonWriter(Writer writer, int indentSize) {
+    public IndentedJsonWriter(Writer writer, int indentSize, int currentLevel) {
         this(writer);
         this.indentSize = indentSize;
+        this.currentLevel = currentLevel;
     }
 
     public int getIndentSize() {
@@ -46,6 +47,7 @@ public class IndentedJsonWriter extends JsonWriter {
     @Override
     public void writeObjectEnd() {
         try {
+            writer.write(NEW_LINE);
             currentLevel--;
             writer.write(getNewLineIndentString());
             writer.write(OBJ_END);
